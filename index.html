@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vishwa D</title>
+<meta name="description" content="Vishwa D — ECE student at K. Ramakrishnan College of Technology. Embedded systems, IoT, robotics and full-stack web.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500;62..125,700;62..125,800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an engineering datasheet — part header, spec table, then sections as numbered datasheet pages; PCB soldermask green + copper. */
+:root{
+  --bg:#f5f6f2; --surface:#ffffff; --fg:#14201a; --muted:#56635b; --line:#d6dcd4;
+  --mask:#123b2c; --mask-fg:#e9f1ec; --copper:#a5611f; --copper-soft:#f3e4d2;
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --w:1080px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b1511; --surface:#11201a; --fg:#e4ece7; --muted:#9aaba1; --line:#24372e;
+  --mask:#0f3325; --mask-fg:#e4ece7; --copper:#e0a061; --copper-soft:#2b2015; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1511; --surface:#11201a; --fg:#e4ece7; --muted:#9aaba1; --line:#24372e;
+  --mask:#0f3325; --mask-fg:#e4ece7; --copper:#e0a061; --copper-soft:#2b2015; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--copper);outline-offset:3px;border-radius:2px}
+.wrap{max-width:var(--w);margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.mono{font-family:var(--mono)}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px;flex-wrap:wrap}
+.mark{font:500 13px/1 var(--mono);letter-spacing:.06em;text-decoration:none}
+.mark b{color:var(--copper);font-weight:500}
+.bar nav{display:flex;gap:4px 18px;flex-wrap:wrap;font-size:14px}
+.bar nav a{text-decoration:none;color:var(--muted)}
+.bar nav a:hover{color:var(--fg)}
+
+/* hero */
+.hero{padding-block:clamp(40px,7vw,80px) 32px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:clamp(24px,5vw,56px);align-items:start}
+.partno{font:500 12px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--copper);display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.partno span+span::before{content:"/";margin-right:10px;color:var(--line)}
+.hero h1{font-size:clamp(3.4rem,11vw,7.2rem);line-height:.88;font-weight:800;font-stretch:72%;letter-spacing:-.01em;text-transform:uppercase}
+.hero .role{font:500 clamp(1.1rem,2.4vw,1.45rem)/1.35 var(--body);margin:20px 0 0;max-width:34ch}
+.hero .lede{color:var(--muted);max-width:60ch;margin:16px 0 0}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border:1px solid var(--fg);font:500 14px/1 var(--body);text-decoration:none;background:none;color:var(--fg);cursor:pointer}
+.btn.solid{background:var(--mask);border-color:var(--mask);color:var(--mask-fg)}
+.btn:hover{border-color:var(--copper)}
+.portrait{position:relative;margin:0}
+.portrait img{display:block;width:100%;aspect-ratio:520/598;object-fit:cover;filter:saturate(.9);border:1px solid var(--line)}
+.portrait figcaption{font:400 11px/1.4 var(--mono);color:var(--muted);margin-top:8px;letter-spacing:.04em}
+/* pad markers on photo corners like a footprint */
+.portrait::before,.portrait::after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--copper)}
+.portrait::before{top:-6px;left:-6px;border-right:0;border-bottom:0}
+.portrait::after{top:calc(100% - 30px);right:-6px;border-left:0;border-top:0}
+
+/* spec table */
+.spec{margin-top:clamp(32px,5vw,48px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid var(--fg);border-bottom:1px solid var(--line)}
+.spec div{padding:14px 16px 16px 0}
+.spec div+div{padding-left:16px;border-left:1px solid var(--line)}
+.spec dt{font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.spec dd{margin:6px 0 0;font:700 1.35rem/1.15 var(--display);font-stretch:85%;font-variant-numeric:tabular-nums}
+.spec dd small{display:block;font:400 13px/1.4 var(--body);color:var(--muted);margin-top:2px}
+
+/* sections */
+section.block{padding-block:clamp(48px,8vw,88px) 0}
+.sec-head{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;align-items:baseline;border-top:1px solid var(--line);padding-top:14px;margin-bottom:28px}
+.sec-head .tag{font:500 12px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--copper)}
+.sec-head h2{font-size:clamp(1.9rem,4.5vw,2.8rem);font-weight:700;font-stretch:80%;line-height:1;text-transform:uppercase}
+
+/* featured project */
+.feature{background:var(--mask);color:var(--mask-fg);padding:clamp(22px,4vw,40px);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);position:relative;overflow:hidden}
+.feature::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.14;
+  background-image:linear-gradient(90deg,transparent 0 46px,currentColor 46px 47px,transparent 47px),linear-gradient(transparent 0 46px,currentColor 46px 47px,transparent 47px);
+  background-size:48px 48px;mask-image:linear-gradient(90deg,transparent 40%,#000)}
+.feature>*{position:relative;z-index:1;min-width:0}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.badge{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:6px 8px;border:1px solid currentColor}
+.badge.cu{background:var(--copper);border-color:var(--copper);color:#fff}
+.feature h3{font-size:clamp(1.7rem,3.6vw,2.4rem);font-weight:700;font-stretch:82%;line-height:1.02}
+.feature p{opacity:.88;margin:14px 0 0;max-width:56ch}
+.feature ul{margin:0;padding:0;list-style:none;display:grid;gap:12px;font-size:15px}
+.feature li{padding-left:18px;position:relative}
+.feature li::before{content:"";position:absolute;left:0;top:.6em;width:7px;height:7px;border-radius:50%;background:var(--copper)}
+.stack{font:400 12.5px/1.6 var(--mono);opacity:.75;margin-top:16px}
+
+.projects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:24px}
+.proj{background:var(--surface);padding:22px 22px 24px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.proj .kind{font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--copper)}
+.proj h3{font-size:1.4rem;font-weight:700;font-stretch:85%;line-height:1.1}
+.proj p{margin:0;color:var(--muted);font-size:15px}
+.proj .stack{opacity:1;color:var(--muted);margin-top:auto;padding-top:6px}
+.links{display:flex;gap:6px 16px;flex-wrap:wrap;font:500 13px/1.4 var(--mono)}
+.links a{color:var(--copper);text-decoration:none;border-bottom:1px solid currentColor}
+.feature .links a{color:var(--copper)}
+
+/* experience */
+.exp{display:grid;gap:0}
+.job{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;padding:22px 0;border-bottom:1px solid var(--line)}
+.job:first-child{padding-top:0}
+.when{font:500 13px/1.5 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.job h3{font:600 1.15rem/1.3 var(--body)}
+.job .org{color:var(--muted);margin:2px 0 10px;font-size:15px}
+.job ul{margin:0;padding-left:18px;display:grid;gap:6px;max-width:68ch}
+
+/* awards */
+.awards{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,40px);align-items:start}
+.award-list{display:grid;gap:0}
+.award{padding:18px 0;border-bottom:1px solid var(--line);display:grid;gap:4px}
+.award:first-child{padding-top:0}
+.award .prize{font:700 1.3rem/1.15 var(--display);font-stretch:85%}
+.award .prize em{font-style:normal;color:var(--copper)}
+.award .where{color:var(--muted);font-size:15px}
+.award .date{font:500 12px/1.4 var(--mono);color:var(--muted)}
+.award-photo{margin:0}
+.award-photo img{display:block;width:100%;height:auto;border:1px solid var(--line)}
+.award-photo figcaption{font:400 12px/1.5 var(--mono);color:var(--muted);margin-top:8px}
+
+/* certifications table */
+.tbl-wrap{overflow-x:auto;border-top:2px solid var(--fg)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:15px}
+th{font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:left;padding:12px 12px 10px 0;border-bottom:1px solid var(--line)}
+td{padding:14px 12px 14px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td.id{font:400 12.5px/1.5 var(--mono);color:var(--muted);word-break:break-all}
+td.dt{font:500 13px/1.5 var(--mono);white-space:nowrap;font-variant-numeric:tabular-nums}
+
+/* skills */
+.skills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 32px}
+.skills h3{font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--copper);margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:14px;padding:5px 10px;border:1px solid var(--line);background:var(--surface)}
+
+/* contact */
+.contact{background:var(--mask);color:var(--mask-fg);margin-top:clamp(56px,9vw,96px);padding-block:clamp(40px,7vw,72px)}
+.contact h2{font-size:clamp(2.2rem,7vw,4.4rem);font-weight:800;font-stretch:72%;line-height:.95;text-transform:uppercase}
+.contact p{opacity:.85;max-width:52ch;margin:16px 0 0}
+.contact-rows{display:grid;gap:0;margin-top:28px;border-top:1px solid color-mix(in srgb,var(--mask-fg) 25%,transparent)}
+.crow{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid color-mix(in srgb,var(--mask-fg) 25%,transparent)}
+.crow dt{font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+.crow dd{margin:0;font:500 clamp(1rem,2.4vw,1.2rem)/1.3 var(--mono);word-break:break-all;user-select:all}
+.crow a{text-decoration:none}
+.crow a:hover{color:var(--copper)}
+.copy{font:500 12px/1 var(--mono);padding:8px 10px;border:1px solid currentColor;background:none;color:inherit;cursor:pointer}
+footer{background:var(--mask);color:var(--mask-fg);opacity:1}
+footer .wrap{padding-block:18px;font:400 12px/1.5 var(--mono);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid color-mix(in srgb,var(--mask-fg) 18%,transparent);color:color-mix(in srgb,var(--mask-fg) 70%,transparent)}
+
+@media (max-width:860px){
+  .hero-grid{grid-template-columns:minmax(0,1fr)}
+  .portrait{max-width:220px;order:-1}
+  .spec{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .spec div:nth-child(3){padding-left:0;border-left:0}
+  .spec div:nth-child(n+3){border-top:1px solid var(--line)}
+  .feature,.awards{grid-template-columns:minmax(0,1fr)}
+  .skills{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:600px){
+  .projects{grid-template-columns:minmax(0,1fr)}
+  .sec-head,.job{grid-template-columns:minmax(0,1fr);gap:6px}
+  .skills{grid-template-columns:minmax(0,1fr)}
+  .crow{grid-template-columns:minmax(0,1fr) auto}
+  .crow dt{grid-column:1/-1}
+  .bar nav{font-size:13px;gap:2px 14px}
+}
+</style>
+
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="#top">VISHWA&nbsp;D <b>/ ECE '28</b></a>
+    <nav aria-label="Sections">
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#awards">Awards</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div class="hero-grid">
+      <div>
+        <div class="partno"><span>B.E. Electronics &amp; Communication</span><span>KRCT, Tiruchirappalli</span><span>Class of 2028</span></div>
+        <h1>Vishwa<br>D</h1>
+        <p class="role">I build hardware and software: robots, circuit boards, and the web apps that run alongside them.</p>
+        <p class="lede">Third-year ECE student at K. Ramakrishnan College of Technology. I co-developed StigRon, a patent-filed autonomous pollination rover for Smart India Hackathon 2026, I'm building the ground control station for the AIR MOUSE rescue drone, and I built the official website for the ISPACET 2026 international conference.</p>
+        <div class="cta">
+          <a class="btn solid" href="#projects">See projects</a>
+          <a class="btn" href="https://github.com/vishwa-0315" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" href="https://www.linkedin.com/in/vishwa-d-272328333" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+      <figure class="portrait">
+        <img src="assets/vishwa.jpg" alt="Portrait of Vishwa D in a navy suit">
+        <figcaption>Tamil Nadu, India</figcaption>
+      </figure>
+    </div>
+
+    <dl class="spec">
+      <div><dt>Focus</dt><dd>Embedded · IoT<small>Robotics and full-stack web</small></dd></div>
+      <div><dt>Patent</dt><dd>1 filed<small>StigRon, SIH 2026</small></dd></div>
+      <div><dt>Hackathon prize</dt><dd>₹2,000<small>ELECTRATHON'26, MKCE</small></dd></div>
+      <div><dt>CGPA</dt><dd>7.3<small>Up to 2nd year</small></dd></div>
+    </dl>
+  </div>
+
+  <section class="block" id="projects" aria-labelledby="h-projects">
+    <div class="wrap">
+      <div class="sec-head"><span class="tag">Projects</span><h2 id="h-projects">Things I've built</h2></div>
+
+      <article class="feature">
+        <div>
+          <div class="badges"><span class="badge cu">Patent filed</span><span class="badge">Smart India Hackathon 2026</span></div>
+          <h3>StigRon: an AI-powered electrostatic pollination rover</h3>
+          <p>An autonomous rover that finds flowers ready for pollination, drives along crop rows, and transfers pollen between chosen plants for controlled cross-pollination. I co-developed it with my team.</p>
+          <p class="stack">YOLO · LiDAR · IMU · RTK-GPS · 3-axis robotic arm · electrostatic collector</p>
+        </div>
+        <ul>
+          <li>Built and integrated the hardware: tracked drive, 3-axis robotic arm, electrostatic pollen collector with an air-resistance disk, and LiDAR, IMU and RTK-GPS modules.</li>
+          <li>Worked on YOLO-based flower and bloom-stage detection, with a camera check after every pollen transfer.</li>
+          <li>Contributed to the companion app that plans crosses and logs breeding data.</li>
+        </ul>
+      </article>
+
+      <div class="projects">
+        <article class="proj">
+          <span class="kind">Drone software · NIDAR 2027</span>
+          <h3>AIR MOUSE Ground Control Station</h3>
+          <p>The control-station frontend for an autonomous indoor search-and-rescue drone. It works without GPS, showing every position in a local SLAM frame, and runs fully offline.</p>
+          <div class="links"><a href="https://nidarui20.vercel.app" target="_blank" rel="noopener">Live demo</a><a href="https://github.com/vishwa-0315/nidar_2.0_ui" target="_blank" rel="noopener">Code</a></div>
+          <p class="stack">React · TypeScript · Vite · Tailwind CSS</p>
+        </article>
+        <article class="proj">
+          <span class="kind">Conference paper · NCICET-2026</span>
+          <h3>Smart Multi-Sensor Health Monitoring with Real-Time ECG Analysis</h3>
+          <p>A multi-sensor platform that analyses ECG signals in real time for continuous patient monitoring. Presented at the national conference at Kings College of Engineering, Thanjavur, on 18 April 2026.</p>
+          <p class="stack">Sensors · ECG signal analysis · embedded systems</p>
+        </article>
+        <article class="proj">
+          <span class="kind">Full-stack web</span>
+          <h3>CampusConnect</h3>
+          <p>A marketplace for college users and departments, with sign-in, REST APIs and database operations for products, requests, transactions, ratings, wishlists and notifications.</p>
+          <p class="stack">Node.js · JavaScript · HTML · CSS · MySQL</p>
+        </article>
+        <article class="proj">
+          <span class="kind">Robotics</span>
+          <h3>Gesture-Controlled Rover</h3>
+          <p>A wireless rover driven by hand gestures. Python and OpenCV read the gestures on the control side, and the ESP32 drives the motors and servos.</p>
+          <p class="stack">ESP32 · Arduino · Python · OpenCV</p>
+        </article>
+        <article class="proj">
+          <span class="kind">Electronics</span>
+          <h3>PCB Design in KiCad</h3>
+          <p>Circuits designed end to end: schematic capture, footprint assignment, board layout and Gerber files ready for fabrication.</p>
+          <p class="stack">KiCad · circuit design · Gerber output</p>
+        </article>
+        <article class="proj">
+          <span class="kind">Web · IEEE conference</span>
+          <h3>ISPACET 2026 Website</h3>
+          <p>The official site for the First International Conference on Signal Processing, Automation, Communication and Emerging Technology, hosted by the ECE department at KRCT.</p>
+          <div class="links"><a href="https://space.krct.ac.in/" target="_blank" rel="noopener">space.krct.ac.in</a><a href="https://ispacet-conf.vercel.app" target="_blank" rel="noopener">Vercel</a></div>
+          <p class="stack">HTML · CSS · JavaScript</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="experience" aria-labelledby="h-exp">
+    <div class="wrap">
+      <div class="sec-head"><span class="tag">Experience</span><h2 id="h-exp">Where I've worked</h2></div>
+      <div class="exp">
+        <article class="job">
+          <div class="when">Aug – Sep 2026</div>
+          <div>
+            <h3>Web Developer, ISPACET 2026 Conference Website</h3>
+            <p class="org">K. Ramakrishnan College of Technology · Dept. of ECE · IEEE Madras Section technical sponsorship</p>
+            <ul>
+              <li>Designed and built the official conference website in HTML, CSS and JavaScript, live on the college domain and on Vercel.</li>
+              <li>Built responsive layouts, navigation, animations and small interactions that work the same on every device.</li>
+              <li>Added schedules, speakers, documents, registration and venue details while keeping the conference branding.</li>
+            </ul>
+          </div>
+        </article>
+        <article class="job">
+          <div class="when">Jun 2026</div>
+          <div>
+            <h3>Intern</h3>
+            <p class="org">Bharat Sanchar Nigam Limited (BSNL) · Thanjavur</p>
+            <ul>
+              <li>Completed one-week internship training at the Office of the General Manager, BSNL Thanjavur.</li>
+              <li>Studied telecom fundamentals, digital communication, optical fibre concepts and broadband technology.</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="awards" aria-labelledby="h-awards">
+    <div class="wrap">
+      <div class="sec-head"><span class="tag">Awards</span><h2 id="h-awards">Prizes and papers</h2></div>
+      <div class="awards">
+        <div class="award-list">
+          <div class="award">
+            <span class="prize">Consolation Prize · <em>₹2,000</em></span>
+            <span class="where">ELECTRATHON'26, a national-level 24-hour hackathon, Dept. of EEE, M. Kumarasamy College of Engineering, Karur</span>
+            <span class="date">5–6 Mar 2026 · team award</span>
+          </div>
+          <div class="award">
+            <span class="prize">Third Prize, Paper Presentation</span>
+            <span class="where">Electrospark'25, a national-level technical symposium, Indra Ganesan College of Engineering, Trichy</span>
+            <span class="date">26 Aug 2025</span>
+          </div>
+          <div class="award">
+            <span class="prize">Paper presented at NCICET-2026</span>
+            <span class="where">National Conference on Intelligent Computing and Emerging Technologies, Kings College of Engineering, Thanjavur, with ICT Academy of Tamil Nadu</span>
+            <span class="date">18 Apr 2026</span>
+          </div>
+          <div class="award">
+            <span class="prize">Patent application filed</span>
+            <span class="where">StigRon autonomous pollination rover, Smart India Hackathon 2026</span>
+            <span class="date">2026</span>
+          </div>
+        </div>
+        <figure class="award-photo">
+          <img src="assets/electrathon.jpg" alt="Vishwa receiving the ELECTRATHON'26 prize on stage at M. Kumarasamy College of Engineering" loading="lazy">
+          <figcaption>Receiving the ELECTRATHON'26 prize at M. Kumarasamy College of Engineering, Karur.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="certifications" aria-labelledby="h-certs">
+    <div class="wrap">
+      <div class="sec-head"><span class="tag">Certifications</span><h2 id="h-certs">Courses completed</h2></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th scope="col">Course</th><th scope="col">Issued by</th><th scope="col">Date</th><th scope="col">Credential</th></tr></thead>
+          <tbody>
+            <tr><td>Innovation by Design</td><td>NPTEL · IIT Bombay</td><td class="dt">Aug 2025</td><td class="id">NPTEL25DE18S549001588</td></tr>
+            <tr><td>Fundamentals of Semiconductor Devices</td><td>NPTEL · IISc Bangalore</td><td class="dt">Apr 2025</td><td class="id">NPTEL25EE39S558700383</td></tr>
+            <tr><td>Java (Basic)</td><td>HackerRank</td><td class="dt">Jul 2025</td><td class="id">322E895C0A25</td></tr>
+            <tr><td>Java Programming for Beginners</td><td>Simplilearn SkillUp</td><td class="dt">Nov 2025</td><td class="id">9426094</td></tr>
+            <tr><td>Embedded System Design Using Arduino</td><td>Rajan Robotics × IEEE Student Branch, KRCT</td><td class="dt">Oct 2025</td><td class="id">4-day value-added course</td></tr>
+            <tr><td>Hands-on Training in IoT Modules</td><td>Advanced Reality Solutions, Chennai</td><td class="dt">Mar 2026</td><td class="id">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="skills" aria-labelledby="h-skills">
+    <div class="wrap">
+      <div class="sec-head"><span class="tag">Skills</span><h2 id="h-skills">Tools I work with</h2></div>
+      <div class="skills">
+        <div><h3>Embedded &amp; IoT</h3><div class="chips"><span class="chip">ESP32</span><span class="chip">Arduino</span><span class="chip">Embedded C</span><span class="chip">Sensor integration</span><span class="chip">Robotics</span></div></div>
+        <div><h3>Electronics</h3><div class="chips"><span class="chip">Circuit design</span><span class="chip">PCB design</span><span class="chip">KiCad</span><span class="chip">Digital communication</span><span class="chip">Optical fibre</span></div></div>
+        <div><h3>Programming</h3><div class="chips"><span class="chip">C</span><span class="chip">Python</span><span class="chip">Java</span><span class="chip">JavaScript</span><span class="chip">TypeScript</span></div></div>
+        <div><h3>Web &amp; backend</h3><div class="chips"><span class="chip">HTML5</span><span class="chip">CSS3</span><span class="chip">React</span><span class="chip">Tailwind CSS</span><span class="chip">Node.js</span><span class="chip">REST APIs</span></div></div>
+        <div><h3>Data &amp; vision</h3><div class="chips"><span class="chip">MySQL</span><span class="chip">SQL</span><span class="chip">OpenCV</span><span class="chip">YOLO</span></div></div>
+        <div><h3>Tools</h3><div class="chips"><span class="chip">Git</span><span class="chip">GitHub</span><span class="chip">VS Code</span><span class="chip">Arduino IDE</span><span class="chip">Vercel</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact" aria-labelledby="h-contact">
+    <div class="wrap">
+      <h2 id="h-contact">Let's build<br>something</h2>
+      <p>I'm open to internships and projects in embedded systems, robotics, IoT and web development.</p>
+      <dl class="contact-rows">
+        <div class="crow"><dt>Email</dt><dd id="email">vishwarajan2007@gmail.com</dd><button class="copy" type="button" id="copy-email">Copy</button></div>
+        <div class="crow"><dt>GitHub</dt><dd><a href="https://github.com/vishwa-0315" target="_blank" rel="noopener">github.com/vishwa-0315</a></dd><span></span></div>
+        <div class="crow"><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/vishwa-d-272328333" target="_blank" rel="noopener">linkedin.com/in/vishwa-d-272328333</a></dd><span></span></div>
+      </dl>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><span>© <span id="yr">2026</span> Vishwa D</span><span>Tiruchirappalli, Tamil Nadu</span></div></footer>
+
+<script>
+(function(){
+  var y=document.getElementById('yr'); if(y) y.textContent=new Date().getFullYear();
+  var b=document.getElementById('copy-email'), e=document.getElementById('email');
+  if(!b||!e) return;
+  b.addEventListener('click',function(){
+    var t=e.textContent.trim();
+    function done(){b.textContent='Copied'; setTimeout(function(){b.textContent='Copy'},1600)}
+    function fallback(){var r=document.createRange(); r.selectNodeContents(e); var s=getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent='Selected'; setTimeout(function(){b.textContent='Copy'},1600)}
+    try{ navigator.clipboard.writeText(t).then(done,fallback) }catch(_){ fallback() }
+  });
+})();
+</script>
+
+</body>
+</html>
